@@ -18,4 +18,16 @@ public class IndexController : ControllerBase
     [HttpPost]
     public Task<JObject> Post([FromBody] JObject body) 
         => _roundRobinCore.SendWithRetryAsync(body);
+
+    [HttpGet("stats")]
+    public IDictionary<string, int> GetStats()
+        => _roundRobinCore.GetStats();
+
+    [HttpGet("active")]
+    public string[] GetActive()
+        => _roundRobinCore.GetAddresses(true);
+
+    [HttpGet("inactive")]
+    public string[] GetInactive()
+        => _roundRobinCore.GetAddresses(false);
 }

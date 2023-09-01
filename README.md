@@ -52,14 +52,12 @@ slowly?
  - How would I test this application?
 
 ## Docker
-### SIMPLE API
+### Create Certificate
 
-cd {work-directory}\ApplicationApi
+dotnet dev-certs https -ep C:\.aspnet\https\aspnetapp.pfx -p testpassword
+dotnet dev-certs https --trust
 
-docker build -t application-api .
+### Run APIs
 
-docker run -d -p 8080:80 application-api
+docker compose up
 
-docker run -d -p 8081:80 application-api
-
-docker run -d -p 8082:80 application-api

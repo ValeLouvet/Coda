@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  roundrobinapi:
+    image: ${DOCKER_REGISTRY-}roundrobinapi
+    build:
+      context: .
+      dockerfile: RoundRobinApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/test.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=testpassword
+    ports:
+      - 8080:80
+      - 27443:443
+    volumes:
+      - F:\Dev\Coda:/https/
+  applicationapi:
+    image: ${DOCKER_REGISTRY-}applicationapi
+    deploy:
+      mode: replicated
+      replicas: 3
+    build:
+      context: .
+      dockerfile: ApplicationApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 27000-27002:80
+    volumes:
+      - F:\Dev\Coda:/https/
