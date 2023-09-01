@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["RoundRobinApi/RoundRobinApi.csproj", "RoundRobinApi/"]
+COPY ["RoundRobinApi.csproj", "RoundRobinApi/"]
 RUN dotnet restore "RoundRobinApi/RoundRobinApi.csproj"
-COPY . .
 WORKDIR "/src/RoundRobinApi"
+COPY . .
 RUN dotnet build "RoundRobinApi.csproj" -c Release -o /app/build
 
 FROM build AS publish

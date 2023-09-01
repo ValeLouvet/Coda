@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\Coda</DockerfileContext>
     <UserSecretsId>7db9fe82-7ce3-46dc-8a70-e264e8667c5a</UserSecretsId>
   </PropertyGroup>
 
