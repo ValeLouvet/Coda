@@ -26,10 +26,10 @@ application api then the first request goes to instance 1, the second to instanc
 instance 3 etc
 
 ### Considerations
-- How would my round robin API handle it if one of the application APIs goes down?
-- How would my round robin API handle it if one of the application APIs starts to go
+ - How would my round robin API handle it if one of the application APIs goes down?
+ - How would my round robin API handle it if one of the application APIs starts to go
 slowly?
-- How would I test this application?
+ - How would I test this application?
 
 ## Docker
 ### SIMPLE API
