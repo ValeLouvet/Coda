@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton(builder.Configuration.Get<AddressesConfiguration>());
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient(nameof(RoundRobinCore), x => { x.Timeout = TimeSpan.FromMilliseconds(500); });
 builder.Services.AddScoped<IRoundRobinCore, RoundRobinCore>();
 builder.Services.AddControllers().AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

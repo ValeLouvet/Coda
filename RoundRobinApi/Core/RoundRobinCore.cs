@@ -18,10 +18,10 @@ public class RoundRobinCore : IRoundRobinCore
     private const int _retryCount = 5;
     private const int _queueThreshold = 50;
 
-    public RoundRobinCore(AddressesConfiguration config, HttpClient httpClient)
+    public RoundRobinCore(AddressesConfiguration config, IHttpClientFactory httpClientFactory)
     {
         ArgumentNullException.ThrowIfNull(config.Addresses);
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient(nameof(RoundRobinCore));
         _addresses = config.Addresses;
         if(_addressesErrorCount.Count == 0)
         {
@@ -48,11 +48,23 @@ public class RoundRobinCore : IRoundRobinCore
     public IDictionary<string, int> GetStats()
         => _addressesExecutionCount;
 
-    public string[] GetAddresses(bool active)
-    {
-        return active
+    public IDictionary<string, int> GetErrors()
+        => _addressesErrorCount;
+
+    public string[] GetAddresses(bool active) 
+        => active
             ? _addressesErrorCount.Where(x => x.Value < _errorCountThreshold).Select(x => x.Key).ToArray()
             : _addressesErrorCount.Where(x => x.Value >= _errorCountThreshold).Select(x => x.Key).ToArray();
+
+    public void ReactivateAll()
+    {
+        _addressesErrorCount = new ConcurrentDictionary<string, int>();
+        _addressesExecutionCount = new ConcurrentDictionary<string, int>();
+        for (int i = 0; i < _addresses.Length; i++)
+        {
+            _addressesErrorCount.TryAdd(_addresses[i], 0);
+            _addressesExecutionCount.TryAdd(_addresses[i], 0);
+        }
     }
 
     public async Task<JObject> SendWithRetryAsync(JObject request)

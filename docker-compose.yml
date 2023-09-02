@@ -1,8 +1,8 @@
-version: '3.4'
+version: '3.7'
 
 services:
   roundrobinapi:
-    image: ${DOCKER_REGISTRY-}roundrobinapi
+    image: ${DOCKER_REGISTRY-}roundrobinapi:dev
     build:
       context: .
       dockerfile: RoundRobinApi/Dockerfile
@@ -17,16 +17,23 @@ services:
     volumes:
       - F:\Dev\Coda:/https/
   applicationapi:
-    image: ${DOCKER_REGISTRY-}applicationapi
-    deploy:
-      mode: replicated
-      replicas: 3
+    image: ${DOCKER_REGISTRY-}applicationapi:dev
     build:
       context: .
       dockerfile: ApplicationApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - 27000-27002:80
-    volumes:
-      - F:\Dev\Coda:/https/
+      - 27000:80
+  applicationapi-1:
+    image: ${DOCKER_REGISTRY-}applicationapi:dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 27001:80
+  applicationapi-2:
+    image: ${DOCKER_REGISTRY-}applicationapi:dev
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 27002:80

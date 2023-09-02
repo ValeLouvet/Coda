@@ -19,6 +19,14 @@ public class IndexController : ControllerBase
     public Task<JObject> Post([FromBody] JObject body) 
         => _roundRobinCore.SendWithRetryAsync(body);
 
+    [HttpGet("reactivate")]
+    public void Reactivate()
+        => _roundRobinCore.ReactivateAll();
+
+    [HttpGet("errors")]
+    public IDictionary<string, int> GetErrors()
+        => _roundRobinCore.GetErrors();
+
     [HttpGet("stats")]
     public IDictionary<string, int> GetStats()
         => _roundRobinCore.GetStats();
